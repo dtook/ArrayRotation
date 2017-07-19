@@ -10,84 +10,58 @@ namespace ArrayRotation
     {
         public void RotateArray(int rotations, string[] sequenceArr)
         {
-            //move each element of array to the right as per rotations
             int n = 0;
-            int mv = 0;
-            int length = sequenceArr.Length;
+            int m = 0;
 
-            for (n = 0; n < length; n++)
-            {
-                Console.WriteLine("Echo Sequence now as String Array " + sequenceArr[n]);
-            }
-
-            //rotate by moving the last element value of the array to the first point in the temp array
-            //keep doing that for the number of rotations
-
-            //char[] tempCharArr = sequenceArr.ToString().ToCharArray();
-
-            //length = tempCharArr.Length;
-
-            //for (n = 0; n < length; n++)
-            //{
-            //    Console.WriteLine("Echo Sequence now as Char Array " + tempCharArr[n]);
-            //}
-
-            //merge the string array
+            //Create a string to merge the string of arrays
             string merged = "";
-            
+
             foreach (string str in sequenceArr)
             {
                 merged += str;
             }
 
-            //convert the merged array to char array
-            merged.ToCharArray();
+            //create the char arrays to work with
+            char[] charArrTemp = merged.ToCharArray();
+            char[] charArr = merged.ToCharArray();
 
-            //debug char array
-            //for (n = 0; n < length; n++){Console.WriteLine("Echo Sequence now as Char Array " + merged[n]);}
+            //initialise the first value so we don't loose it
+            int temp = charArrTemp[0];
 
-            //store first char in array
-            int length2 = sequenceArr.Length;
-            char tempArrEl1 = merged[1];
-            char tempArrElx = merged[length2];
-
-            //move each element forward one in the array
-            //..then restart
-            char[] charArrayTemp = merged;
-
-
-
-            int n2;
-
-            for (n2 = 1; n < rotations; n++)
+            for (m = 0; m < rotations; m++)
             {
-                tempArrEl1 = merged[1];
-                tempArrElx = merged[2];
 
-                sequenceArr[tempArrEl1] = sequenceArr[tempArrElx];
+                for (n = 0; n < charArr.Length - 1; n++)
+                {
+                    //move each element forward one place
+                    charArrTemp[n] = charArr[n + 1];
+                }
+                //then repeat again to complete teh rotations
 
+                //replace last with first
+                charArrTemp[charArr.Length - 1] = charArr[0];
+
+                //make sure temporary array has the new elements
+                Array.Copy(charArrTemp, charArr, charArr.Length);
             }
 
+            int length = charArr.Length;
 
-
-            //string[] tempArray = sequenceArr;
-
-            //for(n=0; n < rotations; n++)
-            //{
-            //    tempArray[n] = sequenceArr.ElementAt(mv++);
-                
-            //}
-
-            for (n = 0; n < length; n++)
-            {
-                Console.WriteLine("Echo Sequence rotated " + sequenceArr[n]);
-            }
+            //display the rotated array
+            DisplayRotatedArray(charArrTemp, length);
+            
 
         }
 
-        public void DisplayRotatedArray()
+        private void DisplayRotatedArray(char[] charArrTemp, int length)
         {
+            int n = 0;
 
+            //Output the rotated sequence
+            for (n = 0; n < length; n++)
+            {
+                Console.WriteLine("Echo Sequence rotated " + charArrTemp[n]);
+            }
         }
 
     }
@@ -101,11 +75,22 @@ namespace ArrayRotation
             //###
             //get string from user and convert to string array
 
+            DebugMon debug = new DebugMon();
+
+            ValVer validate = new ValVer();
+
+            validate.Sequence = "4 3 2 1";
+
             //reference physicsforums.com
             //int[] sequence = Convert.ToInt32(Console.ReadLine()).ToString().ToCharArray().Select(x => (int)Char.GetNumericValue(x)).ToArray();
+            Console.WriteLine("Please enter a line of integers seperated by spaces");
+            //string sequence = Console.ReadLine();
+            //This is a pointless line it is just for testing purposes to understand get/set within a field property.
+            string sequence = validate.Sequence;
 
-            string sequence = Console.ReadLine();
-            Console.WriteLine("Echo Sequence " + sequence);
+
+            //Console.WriteLine("Echo Sequence " + sequence);
+            debug.DebugVariable(sequence);
             var sequenceArr = sequence.Split(' ');
 
             int length = sequenceArr.Length;
@@ -120,14 +105,22 @@ namespace ArrayRotation
             
             //request number of rotations
             Console.WriteLine("How many times would you like to rotate the array to the right?");
-            int rotations = Convert.ToInt32(Console.ReadLine());
+            int rotations = 0;
+            rotations = Convert.ToInt32(Console.ReadLine());
 
-            //intialise constructor for class
-            ArrayOperations ops = new ArrayOperations();
-            //perform rotations
-            ops.RotateArray(rotations, sequenceArr);
+            if(rotations != 0)
+            {
+                //intialise constructor for class
+                ArrayOperations ops = new ArrayOperations();
+                //perform rotations
+                ops.RotateArray(rotations, sequenceArr);
 
-            //output state of array after rotations
+                //output state of array after rotations
+            }
+            else
+            {
+                Console.WriteLine("You did not enter any rotations.");
+            }            
         }
     }
 }
